@@ -20,7 +20,7 @@ nodes:
     env:
       DATASET_DIR: "test/dataset"
       METADATA_FILE: "metadata.yaml"
-      CHECKPOINT_PATH: "/path/to/checkpoints/<run-name>/<step>"
+      CHECKPOINT_PATH: "enactic/GR00T-N1.7-openarm-2-cell-pillow"
       AUTO_OPEN: "yes"
       PORT: "8000"
     inputs:
@@ -68,7 +68,7 @@ nodes:
   - id: arm-right
     build: pip install -e nodes/dora-openarm
     path: dora-openarm
-    args: "--side right --align-threshold 0.2 --config ./openarm_cell_higher_pd.yaml"
+    args: "--side right --align-threshold 0.2 --config high_pd.yaml"
     inputs:
       request_position: quittable-tick-arm/tick
       request_state:    quittable-tick-arm/tick
@@ -82,7 +82,7 @@ nodes:
   - id: arm-left
     build: pip install -e nodes/dora-openarm
     path: dora-openarm
-    args: "--side left --align-threshold 0.2 --config ./openarm_cell_higher_pd.yaml"
+    args: "--side left --align-threshold 0.2 --config high_pd.yaml" 
     inputs:
       request_position: quittable-tick-arm/tick
       request_state:    quittable-tick-arm/tick
@@ -202,9 +202,7 @@ nodes:
     env:
       SOCKET: "/dev/shm/policy-server.socket"
     inputs:
-      # Keep only the newest observation: inference is slower than the
-      # observer, and a backlog would feed the policy stale frames.
-      observation:
+      observation: 
         source: quittable-observer/observation
         queue_size: 1
     outputs:
