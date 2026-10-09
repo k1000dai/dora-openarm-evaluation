@@ -202,7 +202,11 @@ nodes:
     env:
       SOCKET: "/dev/shm/policy-server.socket"
     inputs:
-      observation: quittable-observer/observation
+      # Keep only the newest observation: inference is slower than the
+      # observer, and a backlog would feed the policy stale frames.
+      observation:
+        source: quittable-observer/observation
+        queue_size: 1
     outputs:
       - actions
 
